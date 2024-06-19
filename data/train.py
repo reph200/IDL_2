@@ -4,7 +4,7 @@ from encoder import Autoencoder
 import torch.nn as nn
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-
+import matplotlib.pyplot as plt
 
 # Transform to normalize the data
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
@@ -41,7 +41,7 @@ for epoch in range(num_epochs):
         train_loss += loss.item() * images.size(0)
 
     train_loss /= len(train_loader.dataset)
-
+    # print(len(train_loader.dataset))
     print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {train_loss:.4f}')
 
     # Validation
@@ -56,3 +56,30 @@ for epoch in range(num_epochs):
 
     val_loss /= len(test_loader.dataset)
     print(f'Validation Loss: {val_loss:.4f}')
+
+    model.eval()
+    with torch.no_grad():
+        for images, _ in test_loader:
+            images = images.to(device)
+            outputs = model(images)
+            break  # We just want one batch for visualization
+
+    # Move images to CPU and denormalize for plotting
+    images = images.cpu().numpy()
+    outputs = outputs.cpu().numpy()
+
+    # Plot original images
+    fig, axes = plt.subplots(1, 10, figsize=(15, 1.5))
+    for i in range(10):
+        axes[i].imshow(images[i].reshape(28, 28), cmap='gray')
+        axes[i].axis('off')
+    fig.suptitle('Original Images')
+    plt.show()
+
+    # Plot reconstructed images
+    fig, axes = plt.subplots(1, 10, figsize=(15, 1.5))
+    for i in range(10):
+        axes[i].imshow(outputs[i].reshape(28, 28), cmap='gray')
+        axes[i].axis('off')
+    fig.suptitle('Reconstructed Images')
+    plt.show()
