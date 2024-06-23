@@ -43,6 +43,7 @@ class Decoder(nn.Module):
             nn.ConvTranspose2d(16, 1, 3, stride=2, padding=1, output_padding=1),
             # (batch, 16, 14, 14) -> (batch, 1, 28, 28)
             nn.Sigmoid()  # To make sure output is between 0 and 1
+            # nn.Tanh()
         )
 
     def forward(self, x):
