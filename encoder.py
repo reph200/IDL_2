@@ -16,6 +16,7 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         x = self.encoder(x)
+        # print(f"Encoder output shape: {x.shape}")  # Debugging statement
         return x
 
 class LatentSpace(nn.Module):
