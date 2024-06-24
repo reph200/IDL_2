@@ -247,4 +247,4 @@ for epoch in range(num_epochs):
         axes[i].axis('off')
     fig.suptitle('Reconstructed Images')
     plt.show()
-torch.save(decoder.state_dict(), 'decoder_weights.pth')
+torch.save(decoder.state_dict(), 'decoder_weights1.pth')
